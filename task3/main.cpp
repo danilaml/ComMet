@@ -70,7 +70,7 @@ double gauss_middle(unsigned int i0
 	for (unsigned int i = 1; i <= n; ++i) {
 		res += kr[i][i0 - (i / 2)] * mult / fact;
 		fact *= i + 1;
-		mult *= i % 2 == 0 ? t + (i / 2) : t - (i / 2);
+		mult *= i % 2 == 0 ? t + ((i + 1) / 2) : t - ((i + 1) / 2);
 	}
 	return res;
 }
