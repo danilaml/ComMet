@@ -21,7 +21,9 @@ vector<pair<double, double>> createTable(double a, double b, unsigned int m, fun
 
 void sortTable(double x, vector<pair<double, double>> &xs) {
 	sort(xs.begin(), xs.end(),
-		 [x](pair<double, double> const &x1, pair<double, double> &x2){return fabs(x - x2.first) - fabs(x - x1.first) > 0;});
+		 [x](pair<double, double> const &x1, pair<double, double> &x2){
+		return fabs(x - x2.first) - fabs(x - x1.first) > 0;
+	});
 }
 
 double newton(double x, unsigned int n, vector<pair<double, double>> const &xs) {
