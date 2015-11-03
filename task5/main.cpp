@@ -6,6 +6,30 @@
 
 using namespace std;
 
+double leftKF(double a, double b, unsigned int m, function<double (double)> f) {
+	double h = (b - a)/m;
+	double xk = a;
+	double res = 0;
+	for (unsigned int i = 0; i < m; ++i) {
+		res += f(xk);
+		xk += h;
+	}
+	res *= h;
+	return res;
+}
+
+double rightKF(double a, double b, unsigned int m, function<double (double)> f) {
+	double h = (b - a)/m;
+	double xk = a;
+	double res = 0;
+	for (unsigned int i = 0; i < m; ++i) {
+		res += f(xk + h);
+		xk += h;
+	}
+	res *= h;
+	return res;
+}
+
 double rectangleKF(double a, double b, unsigned int m, function<double (double)> f) {
 	double h = (b - a)/m;
 	double xk = a;
@@ -46,10 +70,10 @@ int main()
 {
 	double a, b, J, Jh;
 	unsigned int m;
-	//auto f = [](double x){return (x*x*x + x*x);};
-	//auto Jf = [](double x){return (x*x*x*x/4 + x*x*x/3);};
-	auto f = [](double x){return (1 - exp(-x) + x*x);};
-	auto Jf = [](double x){return (x + exp(-x) + x*x*x/3);};
+	auto f = [](double x){return (x*x*x + x*x);};
+	auto Jf = [](double x){return (x*x*x*x/4 + x*x*x/3);};
+//	auto f = [](double x){return (1 - exp(-x) + x*x);};
+//	auto Jf = [](double x){return (x + exp(-x) + x*x*x/3);};
 	cout << "Enter [a, b]" << endl;
 	cout << "a = ";
 	cin >> a;
@@ -66,6 +90,10 @@ int main()
 	cout.precision(15);
 	cout << fixed;
 	cout << "J = " << (J = Jf(b) - Jf(a)) << endl << endl;
+	cout << "leftKF = " << (Jh = leftKF(a, b, m, f)) << endl;
+	cout << "|J - Jh| = " << fabs(J - Jh) << endl;
+	cout << "rightKF = " << (Jh = rightKF(a, b, m, f)) << endl;
+	cout << "|J - Jh| = " << fabs(J - Jh) << endl;
 	cout << "rectangleKF = " << (Jh = rectangleKF(a, b, m, f)) << endl;
 	cout << "|J - Jh| = " << fabs(J - Jh) << endl;
 	cout << "trapezeKF = " << (Jh = trapezeKF(a, b, m, f)) << endl;
