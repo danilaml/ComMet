@@ -39,20 +39,20 @@ double lagrange(double x, unsigned int n, vector<pair<double, double>> const &xs
 	return px;
 }
 
-double aprox_binsearch(function<double (double)> f, double start, double end, double e) {
+double approx_binsearch(function<double (double)> f, double start, double end, double e) {
 	if (end - start < e) {
 		return start;
 	}
 	double mid = (start + end) / 2;
 	if (f(start) * f(mid) < 0) {
-		return aprox_binsearch(f, start, mid, e);
+		return approx_binsearch(f, start, mid, e);
 	} else {
 		if (f(start) == 0) {
 			return start;
 		} else if (f(end) == 0) {
 			return end;
 		}
-		return aprox_binsearch(f, mid, end, e);
+		return approx_binsearch(f, mid, end, e);
 	}
 }
 
@@ -99,7 +99,7 @@ bool enterxloop(function<double (double)> f
 	for (size_t i = 0; i < xs.size() - 1; ++i) {
 		if (p(xs[i].first) * p(xs[i + 1].first) <= 0) {
 			cout << "x" << j << " = ";
-			cout << (X = aprox_binsearch(p, xs[i].first, xs[i + 1].first, 0.00000001)) << endl;
+			cout << (X = approx_binsearch(p, xs[i].first, xs[i + 1].first, 0.00000001)) << endl;
 			cout << "|f(" << "x" << j++ <<") - F| = " << fabs(f(X) - F) << endl;
 		}
 	}
