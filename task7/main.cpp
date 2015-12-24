@@ -23,7 +23,7 @@ int main()
 	double y0 = 1;
 	auto f = [](double x, double y){return (-2*y+y*y);};
 	auto y = [](double x){return (2/(exp(2*x) + 1));};
-	auto yT = [](double x){return (1 - x + x*x*x/3 - 2/15*pow(x,5) + 17/315*pow(x,7));};
+	auto yT = [](double x){return (1 - x + x*x*x/3 - 2.0/15.0*pow(x,5) + 17.0/315.0*pow(x,7));};
 	while (true) {
 		cout << "N = ";
 		cin >> N;
