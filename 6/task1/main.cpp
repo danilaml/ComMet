@@ -50,6 +50,7 @@ vector<double> solveDif(double alpha0, double alpha1, double A,
 						function<double (double)> f)
 {
 	double h = (right - left)/n;
+	cout << "wtf" << h << endl;
 	vector<double> a(n + 1);
 	vector<double> b(n + 1);
 	vector<double> c(n + 1);
@@ -57,12 +58,13 @@ vector<double> solveDif(double alpha0, double alpha1, double A,
 	a[0] = 0;
 	c[n] = 0;
 
-	double xi = alpha0 + h;
+	double xi = left + h;
 	for (int i = 1; i < n; ++i) {
 		a[i] = p(xi) - q(xi)*h/2.0;
 		b[i] = -2.0*p(xi) + r(xi)*h*h;
 		c[i] = p(xi) + q(xi)*h/2.0;
 		d[i] = f(xi)*h*h;
+		xi += h;
 	}
 	if (isFirst) {
 		b[0] = h*alpha0 - alpha1;
@@ -88,46 +90,48 @@ int main()
 	cout << fixed;
 	cout.precision(10);
 	unsigned n;
-	do {
-		cout << "n = ";
-		cin >> n;
-	} while (n < 1);
-	vector<double> a(n + 1);
-	vector<double> b(n + 1);
-	vector<double> c(n + 1);
-	vector<double> d(n + 1);
-
-	a[0] = 0;
-	c[n] = 0;
-	cout << endl;
-	for (unsigned i = 1; i <= n; ++i) {
-		cout << "a[" << i << "] = ";
-		cin >> a[i];
+	cout << "n = ";
+	cin >> n;
+	if (n > 1) {
+		vector<double> a(n + 1);
+		vector<double> b(n + 1);
+		vector<double> c(n + 1);
+		vector<double> d(n + 1);
+		
+		a[0] = 0;
+		c[n] = 0;
+		cout << endl;
+		for (unsigned i = 1; i <= n; ++i) {
+			cout << "a[" << i << "] = ";
+			cin >> a[i];
+		}
+		cout << endl;
+		for (unsigned i = 0; i <= n; ++i) {
+			cout << "b[" << i << "] = ";
+			cin >> b[i];
+		}
+		cout << endl;
+		for (unsigned i = 0; i < n; ++i) {
+			cout << "c[" << i << "] = ";
+			cin >> c[i];
+		}
+		cout << endl;
+		for (unsigned i = 0; i <= n; ++i) {
+			cout << "d[" << i << "] = ";
+			cin >> d[i];
+		}
+		cout << endl << endl;
+		
+		auto x = solveA(a, b, c, d);
+		
+		cout << "r[" << 0 << "] = " << (b[0]*x[0] + c[0]*x[1] - d[0]) << endl;
+		for (unsigned i = 1; i < n; ++i) {
+			cout << "r[" << i << "] = " << (a[i]*x[i - 1] + b[i]*x[i] + c[i]*x[i + 1] - d[i]) << endl;
+		}
+		cout << "r[" << n << "] = " << (a[n]*x[n - 1] + b[n]*x[n] - d[n]) << endl;
+	} else {
+		cout << "Skipping matrix..." << endl;
 	}
-	cout << endl;
-	for (unsigned i = 0; i <= n; ++i) {
-		cout << "b[" << i << "] = ";
-		cin >> b[i];
-	}
-	cout << endl;
-	for (unsigned i = 0; i < n; ++i) {
-		cout << "c[" << i << "] = ";
-		cin >> c[i];
-	}
-	cout << endl;
-	for (unsigned i = 0; i <= n; ++i) {
-		cout << "d[" << i << "] = ";
-		cin >> d[i];
-	}
-	cout << endl << endl;
-
-	auto x = solveA(a, b, c, d);
-
-	cout << "r[" << 0 << "] = " << (b[0]*x[0] + c[0]*x[1] - d[0]) << endl;
-	for (unsigned i = 1; i < n; ++i) {
-		cout << "r[" << i << "] = " << (a[i]*x[i - 1] + b[i]*x[i] + c[i]*x[i + 1] - d[i]) << endl;
-	}
-	cout << "r[" << n << "] = " << (a[n]*x[n - 1] + b[n]*x[n] - d[n]) << endl;
 
 	cout << endl;
 	cout << "--------------DiffEq--------------";
@@ -141,10 +145,16 @@ int main()
 	double beta1 = -1.0;
 	double A = 0;
 	double B = 0;
-	cout << endl << "First, n = 100 :" << endl;
-	solveDif(alpha0, alpha1, A, beta0, beta1, B, 0, 1, 100, true, p, q, r, f);
-	cout << endl << "Second, n = 10 :" << endl;
-	solveDif(alpha0, alpha1, A, beta0, beta1, B, 0, 1, 10, false, p, q, r, f);
+	while (true) {
+		cout << endl << "First, n = ";
+		cin >> n;
+		cout << ": ";
+		solveDif(alpha0, alpha1, A, beta0, beta1, B, 0, 1, n, true, p, q, r, f);
+		cout << endl << "Second, n = ";
+		cin >> n;
+		cout << ": ";
+		solveDif(alpha0, alpha1, A, beta0, beta1, B, 0, 1, n, false, p, q, r, f);
+	}
 
 	return 0;
 }
