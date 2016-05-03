@@ -50,7 +50,6 @@ vector<double> solveDif(double alpha0, double alpha1, double A,
 						function<double (double)> f)
 {
 	double h = (right - left)/n;
-	cout << "wtf" << h << endl;
 	vector<double> a(n + 1);
 	vector<double> b(n + 1);
 	vector<double> c(n + 1);
@@ -120,7 +119,7 @@ int main()
 			cout << "d[" << i << "] = ";
 			cin >> d[i];
 		}
-		cout << endl << endl;
+		cout << endl;
 		
 		auto x = solveA(a, b, c, d);
 		
@@ -148,11 +147,9 @@ int main()
 	while (true) {
 		cout << endl << "First, n = ";
 		cin >> n;
-		cout << ": ";
 		solveDif(alpha0, alpha1, A, beta0, beta1, B, 0, 1, n, true, p, q, r, f);
 		cout << endl << "Second, n = ";
 		cin >> n;
-		cout << ": ";
 		solveDif(alpha0, alpha1, A, beta0, beta1, B, 0, 1, n, false, p, q, r, f);
 	}
 
